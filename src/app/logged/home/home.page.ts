@@ -22,7 +22,7 @@ let baseURL = "https://kickserver.xyz";
 export class HomePage implements OnInit {
 
   map: mapboxgl.Map;
-  style = 'mapbox://styles/sheepbild/ck4ypwvod3t241cqlza366zmc';
+  style = 'mapbox://styles/gperdigal/ckh1ykln916ew1apnxih3omld';
   lng = 46.1390432;
   lat = 2.434848;
   data: any;
@@ -123,9 +123,9 @@ export class HomePage implements OnInit {
           this.map = map;
           this.container = document.createElement('ion-button');
           this.container.className = 'my-custom-control';
-          this.container.innerHTML = '<ion-icon name="pin"></ion-icon>&nbsp;Bitmoji'
-          this.container.setAttribute("color", "dark");
-          this.container.setAttribute("style", "position:absolute; bottom:94px; right:40px;");
+          this.container.innerHTML = '<ion-icon name="pin"></ion-icon>&nbsp;Projet'
+          this.container.setAttribute("color", "success");
+          this.container.setAttribute("style", "position:absolute; bottom:34px; right:15px;");
           this.container.setAttribute("size", "small");
           this.container.setAttribute("id", "myCustomId");
           return this.container;
