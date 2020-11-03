@@ -1,0 +1,87 @@
+<ion-header>
+  <ion-toolbar class="secondBg">
+    <ion-title class="pageTitle">Inscription</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home" color="warning" autoHide='false' text="" icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <div class="ion-padding ion-text-center mainDiv" *ngIf="!onLoading">
+
+    <form (ngSubmit)="registerForm()">
+      <p class="slogan gradientKick">{{slogan}}</p>
+      <div class="marginBetweenInputs"></div>
+      <img src="assets/img/logo.png" class="mainLogo">
+      <div class="marginUnderSlg"></div>
+      <!-- USERNAME INPUT -->
+      <ion-input style="background-color:#a9ecbf;" color="success" name="username" type="text" [pattern]="usernamePattern" #username="ngModel" [(ngModel)]="register.username" required (ionFocus)="usernameInpFoc()" (ionBlur)="usernameInpBlur()" class="usernameInput" placeholder="{{usernameInput}}"></ion-input>
+      <ion-icon *ngIf = "username.errors?.required" style="color:transparent;" name="close-circle"></ion-icon>
+      <ion-icon *ngIf = "!username.errors?.pattern && !username.errors?.required && !wrongUsername" color="success" name="checkmark-circle"></ion-icon>
+      <ion-icon *ngIf = "username.errors?.pattern || wrongUsername" color="danger" name="close-circle"></ion-icon>
+      <p class="inputMsg" *ngIf="usernameOnFocus">{{usernameMsg}}</p>
+      <div class="marginBetweenInputs"></div>
+
+      <!-- EMAIL INPUT -->
+      <ion-input  style="background-color:#a9ecbf;" color="success" name="email" type="email" [pattern]="emailPattern" #email="ngModel" [(ngModel)]="register.email" required (ionFocus)="emailInpFoc()" (ionBlur)="emailInpBlur()" placeholder="{{emailInput}}" class="emailInput"></ion-input>
+      <ion-icon *ngIf = "email.errors?.required" style="color:transparent;" name="close-circle"></ion-icon>
+      <ion-icon *ngIf = "!email.errors?.pattern && !email.errors?.required && !wrongMail" color="success" name="checkmark-circle"></ion-icon>
+      <ion-icon *ngIf = "email.errors?.pattern || wrongMail" color="danger" name="close-circle"></ion-icon>
+      <p class="inputMsg" *ngIf="emailOnFocus">{{emailMsg}}</p>
+      <div class="marginBetweenInputs"></div>
+
+      
+      <!-- TEL INPUT -->
+      <ion-input  style="background-color:#a9ecbf;" color="success" name="tel" type="tel" [pattern]="telPattern" #tel="ngModel" [(ngModel)]="register.tel" required (ionFocus)="telInpFoc()" (ionBlur)="emailInpBlur()" placeholder="{{telInput}}" class="emailInput"></ion-input>
+      <ion-icon *ngIf = "tel.errors?.required" style="color:transparent;" name="close-circle"></ion-icon>
+      <ion-icon *ngIf = "!tel.errors?.pattern && !tel.errors?.required && !wrongMail" color="success" name="checkmark-circle"></ion-icon>
+      <ion-icon *ngIf = "tel.errors?.pattern || wrongMail" color="danger" name="close-circle"></ion-icon>
+      <div class="marginBetweenInputs"></div>
+
+      <!-- FNAME INPUT -->
+      <ion-input style="background-color:#a9ecbf;" color="success" name="fName" type="text" [pattern]="fNamePattern" #fName="ngModel" [(ngModel)]="register.fName" required placeholder="{{fNameInput}}" class="passInput bgInput"></ion-input>
+      <ion-icon *ngIf = "fName.errors?.required" style="color:transparent;" name="close-circle"></ion-icon>
+      <ion-icon *ngIf = "!fName.errors?.pattern && !fName.errors?.required" color="success" name="checkmark-circle"></ion-icon>
+      <ion-icon *ngIf = "fName.errors?.pattern" color="danger" name="close-circle"></ion-icon>
+
+      <!-- LNAME INPUT -->
+      <ion-input style="background-color:#a9ecbf;" color="success" name="lName" type="text" [pattern]="lNamePattern" #lName="ngModel" [(ngModel)]="register.lName" required placeholder="{{lNameInput}}" class="passInput bgInput"></ion-input>
+      <ion-icon *ngIf = "lName.errors?.required" style="color:transparent;" name="close-circle"></ion-icon>
+      <ion-icon *ngIf = "!lName.errors?.pattern && !lName.errors?.required" color="success" name="checkmark-circle"></ion-icon>
+      <ion-icon *ngIf = "lName.errors?.pattern" color="danger" name="close-circle"></ion-icon>
+
+      <div class="marginBetweenInputs"></div>
+      <!-- PASSWORD INPUT -->
+      <ion-input style="background-color:#a9ecbf;" color="success" name="password" type="password" [pattern]="passwordPattern" #password="ngModel" [(ngModel)]="register.password" required (ionFocus)="passwordInpFoc()" (ionBlur)="passwordInpBlur()" placeholder="{{passwordInput}}" class="passInput bgInput"></ion-input>
+      <ion-icon *ngIf = "password.errors?.required" style="color:transparent;" name="close-circle"></ion-icon>
+      <ion-icon *ngIf = "!password.errors?.pattern && !password.errors?.required" color="success" name="checkmark-circle"></ion-icon>
+      <ion-icon *ngIf = "password.errors?.pattern" color="danger" name="close-circle"></ion-icon>
+
+      <!-- CONFIRM PASSWORD INPUT -->
+      <ion-input style="background-color:#a9ecbf;" color="success" name="confirmPassword" type="password" [pattern]="passwordPattern" #passwordConfirm="ngModel" [(ngModel)]="register.passwordConfirm" required (ionFocus)="passwordInpFoc()" (ionBlur)="passwordInpBlur()" (ionChange)="passwordConfChange()" placeholder="{{passwordConfirmInput}}" class="passInput bgInput"></ion-input>
+      <ion-icon *ngIf = "passwordConfirm.errors?.required" style="color:transparent;" name="close-circle"></ion-icon>
+      <ion-icon *ngIf = "!passwordConfirm.errors?.pattern && !passwordConfirm.errors?.required && passwordMatches" color="success" name="checkmark-circle"></ion-icon>
+      <ion-icon *ngIf = "passwordConfirm.errors?.pattern && !passwordMatches" color="danger" name="close-circle"></ion-icon>
+      <ion-icon *ngIf = "!passwordConfirm.errors?.pattern && !passwordMatches && !passwordConfirm.errors?.required" color="danger" name="close-circle"></ion-icon>
+      <p class="inputMsg" *ngIf="passwordOnFocus">{{passwordMsg}}</p>
+      <div class="marginBetweenInputs"></div>
+      <!-- SUBMIT -->
+      <ion-button *ngIf="!passwordConfirm.errors?.pattern && !passwordConfirm.errors?.required && !lName.errors?.pattern && !fName.errors?.pattern && !password.errors?.pattern && !password.errors?.required && !email.errors?.pattern && !email.errors?.required && !username.errors?.pattern && !tel.errors?.pattern && !username.errors?.required && passwordMatches && !wrongMail && !wrongUsername && !logError" expand="full" color="success" type="submit">{{loginBtn}}</ion-button>
+      <ion-button *ngIf="passwordConfirm.errors?.pattern || !tel.errors?.pattern || !fName.errors?.pattern || !lName.errors?.pattern || passwordConfirm.errors?.required || password.errors?.pattern || password.errors?.required || email.errors?.pattern || email.errors?.required || username.errors?.pattern || username.errors?.required || !passwordMatches" expand="full" color="success" disabled>{{loginBtn}}</ion-button>
+      <ion-button disabled *ngIf="wrongMail" expand="full" color="danger">{{wrongMailMsg}}</ion-button>
+      <ion-button disabled *ngIf="wrongUsername" expand="full" color="danger">{{wrongUsernameMsg}}</ion-button>
+      <ion-button disabled *ngIf="logError" expand="full" color="danger">{{logErrorMsg}}</ion-button>
+      <div class="marginBetweenInputs"></div>
+      <h2 class="inputMsg">Déjà un compte ? <ion-text color="success" routerLink="/login">Connexion</ion-text> ou <ion-text color="success" routerLink="/reset-password">Mot de passe oublié ?</ion-text></h2>
+      <div class="marginBetweenInputs"></div>
+    </form>
+
+    <!-- CGU -->
+    <div class="separator">
+      <p style="color: #169916;" class="footerFormMsg">{{signupMsg}} <br><a href="http://kickapp.fr/cgu"><ion-text color="success">{{signupLink}} <ion-icon name="open"></ion-icon></ion-text></a></p>
+    </div>
+  </div>
+  <img *ngIf="onLoading" src="assets/img/loading.gif" class="loadingImg" />
+  <app-footer></app-footer>
+</ion-content>

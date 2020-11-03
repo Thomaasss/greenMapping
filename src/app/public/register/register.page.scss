@@ -1,0 +1,74 @@
+////////////////////// GENERAL //////////////////////
+
+.mainDiv {
+    padding-top:0;
+}
+
+////////////////////// BEFORE FORM //////////////////////
+
+.slogan {
+    margin-top:20px; // Size in global.scss
+}
+
+.marginUnderSlg {
+    height:45px;
+}
+
+.bmjLogo {
+    width:130px;
+    height:auto;
+    border-radius:50%;
+}
+
+.snapchatLogo {
+    width:30px;
+    height:auto;
+    margin-right:5px;
+}
+
+.borderTitle {
+    width: 100%; 
+    text-align: center; 
+    border-bottom: 1px solid rgb(112, 112, 112); 
+    line-height: 0em;
+    margin: 10px 0 20px;
+} 
+ 
+.borderTitle .spanSlogan { 
+    background-color:rgb(19, 19, 19) !important;
+    padding:0 10px; 
+}
+
+////////////////////// INPUTS //////////////////////
+
+.usernameInput {
+    width:60%;
+    display:inline-block;
+}
+
+.emailInput {
+    width:60%;
+    display:inline-block;
+}
+
+.passInput {
+    width:40%;
+    display:inline-block;
+    margin-left:10px;
+}
+
+.inputMsg {
+    font-size:small;
+    margin:0;
+}
+
+////////////////////// AFTER FORM //////////////////////
+
+.separator {
+    border-top:1px solid black;
+    width: 70%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

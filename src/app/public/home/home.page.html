@@ -1,0 +1,14 @@
+<ion-content fullscreen id="" padding>
+  <div class="ion-padding ion-text-center mainDiv">
+    <img src="assets/img/logo.png" class="mainLogo">
+    <div class="marginUnderSlg"></div>
+    <p class="slogan mainSlogan gradientKick">{{slogan}}</p>
+    <div class="marginUnderSlg"></div>
+    <!-- CONNECTION BUTTON -->
+    <ion-button expand="block" fill="outline" color="success" routerLink="/login" routerDirection="forward">{{loginBtn}}</ion-button>
+    <div class="marginBetweenBtns"></div>
+    <!-- SIGNUP BUTTON -->
+    <ion-button expand="block" color="success" routerLink="/register" routerDirection="forward">{{signUpLink}}</ion-button>
+  </div>
+  <app-footer></app-footer>
+</ion-content>
