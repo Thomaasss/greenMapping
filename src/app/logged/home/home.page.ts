@@ -3,7 +3,6 @@ import { TopToolbarComponent } from './../../components/top-toolbar/top-toolbar.
 import { PopoverController, ModalController } from '@ionic/angular';
 
 import { environment } from '../../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
 import * as mapboxgl from 'mapbox-gl';
 import '../../../../node_modules/mapbox-gl/dist/mapbox-gl.css'
 import { map } from 'rxjs/operators';
@@ -34,7 +33,6 @@ export class HomePage implements OnInit {
   userPseudo: any;
   placeName : string;
   constructor(
-    private http: HttpClient,
     private geolocation2: Geolocation,
     private router: Router,
     private popover: PopoverController,
@@ -45,7 +43,7 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.ionicGeolocation();
     //this.postCoordinates();
-    this.getCustomCoordinates();
+    // this.getCustomCoordinates();
   }
 
   ionViewDidEnter() {
@@ -82,17 +80,17 @@ export class HomePage implements OnInit {
     });
   }
 
-  getCustomCoordinates() {
-    this.http.get(`${baseURL}/chatApp/getCoordinates`).subscribe(
-      (res: any) => {
-        console.log(res.object1);
-        this.data = res.object1;
+  // getCustomCoordinates() {
+  //   this.http.get(`${baseURL}/chatApp/getCoordinates`).subscribe(
+  //     (res: any) => {
+  //       console.log(res.object1);
+  //       this.data = res.object1;
 
 
-      }
+  //     }
 
-    );
-  }
+  //   );
+  // }
 
 
   buildMap() {
@@ -235,17 +233,17 @@ export class HomePage implements OnInit {
           coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
 
-        this.getPlaceName(coordinates).subscribe((res: any) => {
-          console.log(res.features[0].place_name);
-          this.placeName= res.features[0].place_name;
-          if(this.placeName = res.features[0].place_name) {
-        new mapboxgl.Popup()
-        .setLngLat(coordinates)
-        .setHTML(`<p style="color:grey;">${this.userPseudo},${this.placeName}</p><ion-button id='myBtn1' color="dark">Profil</ion-button><ion-button id='myBtn' fill="clear" color="dark">Messages</ion-button>`)//`<a class="verticalAlign" [routerLink]="['/contactDashboard',receiverId]">`
-        .addTo(this.map);
-         this.createListener();
-        }
-        });
+        // this.getPlaceName(coordinates).subscribe((res: any) => {
+        //   console.log(res.features[0].place_name);
+        //   this.placeName= res.features[0].place_name;
+        //   if(this.placeName = res.features[0].place_name) {
+        // new mapboxgl.Popup()
+        // .setLngLat(coordinates)
+        // .setHTML(`<p style="color:grey;">${this.userPseudo},${this.placeName}</p><ion-button id='myBtn1' color="dark">Profil</ion-button><ion-button id='myBtn' fill="clear" color="dark">Messages</ion-button>`)//`<a class="verticalAlign" [routerLink]="['/contactDashboard',receiverId]">`
+        // .addTo(this.map);
+        //  this.createListener();
+        // }
+        // });
 
 
 
@@ -265,20 +263,6 @@ export class HomePage implements OnInit {
     document.getElementById("myBtn1").addEventListener("click", () => {
       this.router.navigate(['/contactDashboard', this.userId])
     });
-
-    document.getElementById("myBtn").addEventListener("click", () => {
-      this.presentModalMessaging(this.userId)
-    });
-  }
-
-  async presentModalMessaging(userId) {
-    const modal = await this.modalController.create({
-      component: MessagingPage,
-      componentProps: {
-        user_id: userId
-      }
-    });
-    return await modal.present();
   }
 
   markFunction() {
@@ -303,24 +287,21 @@ export class HomePage implements OnInit {
     let data = {
       coordinates: userCoordinates
     }
-    this.http.post(`${baseURL}/chatApp/putCoordinates`, data).subscribe(
-      (res: any) => {
-        console.log(res);
-      }
+    // this.http.post(`${baseURL}/chatApp/putCoordinates`, data).subscribe(
+    //   (res: any) => {
+    //     console.log(res);
+    //   }
 
-    );
+    // );
 
   }
   goBack() {
     console.log("wantstobackoff")
   }
 
-  getPlaceName(coordinates) {
-    return this.http.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${coordinates}.json?types=place&access_token=${environment.mapbox.accessToken}`)
-
-
-    
-  }
+  // getPlaceName(coordinates) {
+  //   return this.http.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${coordinates}.json?types=place&access_token=${environment.mapbox.accessToken}`)
+  // }
   /*
   ngOnDestroy() { 
     console.log("IM LEAVING MAP BOYS")
