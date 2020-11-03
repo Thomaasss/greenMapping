@@ -38,7 +38,6 @@ export class HomePage implements OnInit {
   }
 
   ionViewDidEnter() {
-    this.buildMap();
   }
 
   ionViewDidLeave() {
@@ -60,6 +59,7 @@ export class HomePage implements OnInit {
       .then((resp) => {
         this.lat = resp.coords.latitude;
         this.lng = resp.coords.longitude;
+        this.buildMap();
       })
       .catch((error) => {
         console.log('Error getting location', error);
@@ -99,7 +99,7 @@ export class HomePage implements OnInit {
           this.container.setAttribute('color', 'success');
           this.container.setAttribute(
             'style',
-            'position:fixed; bottom:10px; right:0; left: 0; padding: 0 10px;'
+            'position:fixed; bottom:10px; right:0; left: 0; padding: 0 20px;'
           );
           this.container.setAttribute('size', 'small');
           this.container.setAttribute('id', 'myCustomId');
@@ -117,38 +117,6 @@ export class HomePage implements OnInit {
       document.getElementById('myCustomId').addEventListener('click', () => {
         this.markFunction();
         this.map.removeControl(myCustomControl);
-      });
-
-      this.map.addSource('customPoint', {
-        type: 'geojson',
-        data: this.data,
-      });
-
-      this.map.addLayer({
-        id: 'customPoint',
-        type: 'circle',
-        source: 'customPoint',
-        filter: ['has', 'point_count'],
-        paint: {
-          'circle-color': [
-            'step',
-            ['get', 'point_count'],
-            '#afd076',
-            100,
-            '#afd076',
-            750,
-            '#afd076',
-          ],
-          'circle-radius': [
-            'step',
-            ['get', 'point_count'],
-            20,
-            100,
-            30,
-            750,
-            40,
-          ],
-        },
       });
     });
   }

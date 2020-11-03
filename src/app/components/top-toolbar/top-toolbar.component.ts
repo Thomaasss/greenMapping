@@ -56,12 +56,6 @@ export class TopToolbarComponent implements OnInit, OnDestroy {
       color:"light"
     },
     {
-      title:"Communauté",
-      url:"/community",
-      icon:"contacts",
-      color:"light"
-    },
-    {
       title:"A propos",
       url:"/about",
       icon:"information-circle-outline",
@@ -71,11 +65,9 @@ export class TopToolbarComponent implements OnInit, OnDestroy {
 
   //////////////// LIFE CYCLE ////////////////
   ngOnInit() {
-    console.log("ngOnInit Menu");
   }
 
   ionViewDidEnter() {
-    console.log("ionViewDidEnter Menu");
   }
 
   ngOnDestroy() {

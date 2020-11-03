@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
+import { ApiService } from 'src/app/services/api.service';
 
 @Component({
   selector: 'app-register',
@@ -53,14 +54,6 @@ export class RegisterPage implements OnInit {
   emailOnFocus : boolean;
   passwordOnFocus : boolean;
 
-  // SNAPCHAT FIELDS
-
-  snapUserAvatarId : string;
-  snapUserId : string;
-  snapUserAvatarUrl : string;
-  snapUserPseudo : string;
-  isSnapSync : boolean;
-
   // ABOVE SUMBIT
 
   signupMsg : string;
@@ -76,20 +69,16 @@ export class RegisterPage implements OnInit {
   wrongUsernameMsg : string;
   logErrorMsg : string;
 
-  // LINK FUNCTION
-
-  goSnap : string;
-
   // FORM STEP
 
-  snapStep : boolean;
 
   onLoading:boolean;
 
   constructor(private router : Router,
               private alertController : AlertController,
               private route : ActivatedRoute,
-              public toastController : ToastController) {
+              public toastController : ToastController,
+              private api: ApiService) {
     this.pageTitle="Inscription";
 
     this.slogan = "Plus qu'une petite étape...";
@@ -120,93 +109,17 @@ export class RegisterPage implements OnInit {
     this.wrongUsernameMsg = "Nom d'utilisateur déjà enregistré";
     this.logErrorMsg = "Erreur lors de l'inscription";
 
-    this.snapStep = false;
-    this.isSnapSync = false;
 
     this.onLoading = false;
 
-    this.goSnap = "connectSnap";
   }
 
   ionViewWillEnter(){
   }
 
-  ngOnInit() {
-    this.route.paramMap.subscribe(params =>
-      {
-        this.snapUserAvatarId = params.get('snapUserAvatarId')
-        this.snapUserId = params.get('snapUserId')
-        this.snapUserAvatarUrl = params.get('snapUserAvatarUrl')
-        this.snapUserPseudo = params.get('snapUserPseudo')
-        console.log(this.snapUserPseudo);
-        if (this.snapUserPseudo != null) {
-          this.isSnapSync = true;
-        }
-        this.snapStep = true;
-      });
-  }
-
-  // registerForm(){
-
-  //   this.onLoading = true;
-  //   let data;
-
-  //   if(this.isSnapSync) {
-  //     data = {
-  //       pseudo : this.register.pseudo,
-  //       username: this.register.username,
-  //       email : this.register.email,
-  //       password : this.register.password,
-  //       snapAvatarId : this.snapUserAvatarId,
-  //       snapUserId : this.snapUserId, //snapUserId is returned as en empty string in the back, might want to check it, all snap field has been made optional in register backend
-  //       snapAvatarUrl : this.snapUserAvatarUrl,
-  //       snapPseudo : this.snapUserPseudo
-  //     };
-  //   } else {
-  //     data = {
-  //       pseudo : this.register.pseudo,
-  //       username: this.register.username,
-  //       email : this.register.email,
-  //       password : this.register.password
-  //     };
-  //   }
-
-  //   this.http.post('https://kickserver.xyz/chatApp/registerMongoDB', data)
-  //   .subscribe(
-  //     (response : any) => {
-      
-  //     if (response.registeredIn === true) {
-  
-  //       // this.presentAlert("Inscription réussie!","","Vous pouvez désormais vous connecter sur kickapp")
-  //       this.onLoading = true;
-  //       this.presentToast();
-  //       setTimeout(() => { this.router.navigate(['login']); }, 2500);
-  //       console.log('Operation validee', response.registeredIn);
-  //     }
-  
-  //     else if (response.emailAlreadyExisting ===true) {
-  //       this.onLoading = false;
-  //       this.wrongMail = true;
-  //       setTimeout(() => { this.wrongMail1 = true; }, 1000);
-  //     }
-  //     else if (response.usernameAlreadyExisting === true) {
-  //       this.onLoading = false;
-  //       this.wrongUsername = true;
-  //       console.log(this.wrongUsername);
-  //     }
-  //     console.log(response);
-  //   }, (err) => {
-  //     this.onLoading = false;
-  //     this.logError = true;
-  //   });
-  // }
-
   changeStep() {
-    this.snapStep = !this.snapStep;
     this.userPseudo = this.register.pseudo;
   }
-
-  // onKey(event) {this.pseudo = event.target.value; console.log(inputValue)}
 
   async presentToast() {
     const toast = await this.toastController.create({
@@ -226,15 +139,9 @@ export class RegisterPage implements OnInit {
     document.body.appendChild(alert);
     return alert.present();
   }
-   
-  async alertBitmoji() {
-    const alert = await this.alertController.create({
-      header: 'Bitmoji',
-      message: 'Bitmoji n\'a pas encore été integré à Kick',
-      buttons: ['OK']
-    });
 
-    await alert.present();
+  registerForm() {
+    this.api.register(this.register);
   }
 
   wrongEmailRemove() {
