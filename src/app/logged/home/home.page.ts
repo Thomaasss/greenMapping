@@ -125,7 +125,7 @@ export class HomePage implements OnInit {
           this.container.className = 'my-custom-control';
           this.container.innerHTML = '<ion-icon name="pin"></ion-icon>&nbsp;Projet'
           this.container.setAttribute("color", "success");
-          this.container.setAttribute("style", "position:absolute; bottom:34px; right:15px;");
+          this.container.setAttribute("style", "position:absolute; bottom:94px; right:45px;");
           this.container.setAttribute("size", "small");
           this.container.setAttribute("id", "myCustomId");
           return this.container;
