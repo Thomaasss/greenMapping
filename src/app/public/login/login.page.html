@@ -1,0 +1,39 @@
+<ion-header *ngIf="!onLoading">
+  <ion-toolbar class="secondBg">
+    <ion-title class="pageTitle">Connexion</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button color="warning" defaultHref="/home" autoHide='false' text="" icon="arrow-back"></ion-back-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen >
+  <form (ngSubmit)="login()" *ngIf="!onLoading">
+    <div class="ion-padding ion-text-center mainDiv">
+      <img src="assets/img/logo.png" class="mainLogo" />
+      <div class="marginUnderSlg"></div>
+      <p class="slogan gradientKick">The future is yours</p>
+      <div style="margin-bottom:30px;"></div>
+      <ion-input style="background-color:#a9ecbf;" color="success" autofocus="true" placeholder="{{usernameInput}}" class="bgInput" type="text" name="username" #username="ngModel" [(ngModel)]="loginForm.username" required (ionFocus)="usernameInpFoc()" (ionBlur)="usernameInpBlur()" [pattern]="usernamePattern"></ion-input>
+      <p class="inputMsg" *ngIf="usernameOnFocus">{{usernameMsg}}</p>
+      <div class="marginBetweenInputs"></div>
+      <div class="marginBetweenInputs"></div>
+
+      <ion-input style="background-color:#a9ecbf;" color="success" autofocus="true" placeholder="{{passwordInput}}" class="bgInput" type="password" name="password" #password="ngModel" [(ngModel)]="loginForm.password" #password="ngModel" required (ionFocus)="passwordInpFoc()" (ionBlur)="passwordInpBlur()" [pattern]="passwordPattern"></ion-input>
+      <p class="inputMsg" *ngIf="passwordOnFocus">{{passwordMsg}}</p>
+      <div class="marginBetweenInputs"></div>
+
+      <div style="margin-bottom:30px;"></div>
+      <ion-button disabled *ngIf="wrongLogin" expand="full" color="danger">{{wrongLoginMsg}}</ion-button>
+      <ion-button *ngIf="!password.errors?.pattern && !password.errors?.required && !username.errors?.pattern && !username.errors?.required && !wrongLogin" expand="full" color="dark" type="submit">{{loginBtn}}</ion-button>
+      <ion-button *ngIf="password.errors?.pattern || password.errors?.required || username.errors?.pattern || username.errors?.required && !wrongLogin" expand="full" color="dark" disabled>{{loginBtn}}</ion-button>
+      
+      <div class="marginBetweenBtns"></div>
+      <div class="separator">
+          <p class="footerFormMsg">{{resetPassMsg}} <a class="greyLink" routerLink="/reset-password" routerDirection="forward">{{resetPassLink}}</a></p>
+      </div>
+    </div>
+  </form>
+  <img *ngIf="onLoading" src="assets/img/loading.gif" class="loadingImg" />
+  <app-footer></app-footer>
+</ion-content>

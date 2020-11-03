@@ -1,0 +1,31 @@
+
+<ion-content>
+  <ion-list>
+    <ion-text color="light"><h2>Paramètres</h2></ion-text>
+      <li style="margin-top:40px !important;">
+          <ion-button (click)="UITheming()" class="displayBlock" fill="clear">
+            <ion-text [color]="themingColor">{{themingTitle}}</ion-text>
+            <ion-icon [color]="themingColor" [name]="themingIcon" slot="end"></ion-icon>
+          </ion-button>
+      </li>
+      <div class="space"></div>
+      <li *ngFor="let page of pages">
+          <ion-button class="displayBlock" fill="clear" [routerLink]="page.url" routerDirection="forward" (click)="ClosePopover()">
+            <ion-chip color="light"><ion-icon style="margin:0 !important;" [color]="page.color" [name]="page.icon"></ion-icon><ion-text style="margin-left:10px;" [color]="page.color">{{page.title}}</ion-text></ion-chip>
+          </ion-button>
+      </li>
+      <li>
+        <ion-button class="displayBlock" fill="clear" (click)="presentModalAccount()" (click)="ClosePopover()">
+          <ion-text color="light">Compte</ion-text>
+          <ion-icon color="light" name="key" slot="end"></ion-icon>
+        </ion-button>
+    </li>
+      <div class="space"></div>
+      <li>
+          <ion-button class="displayBlock" fill="clear" (click)="logout()" (click)="ClosePopover()">
+            <ion-text [color]="logoutColor">{{logoutTitle}}</ion-text>
+            <ion-icon [color]="logoutColor" [name]="logoutIcon" slot="end"></ion-icon>
+          </ion-button>
+      </li>
+  </ion-list>
+</ion-content>
