@@ -4,46 +4,37 @@ import { PopoverController, ModalController } from '@ionic/angular';
 
 import { environment } from '../../../environments/environment';
 import * as mapboxgl from 'mapbox-gl';
-import '../../../../node_modules/mapbox-gl/dist/mapbox-gl.css'
-import { map } from 'rxjs/operators';
-import Supercluster from 'supercluster';
+import '../../../../node_modules/mapbox-gl/dist/mapbox-gl.css';
 import { Inject, Injectable } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Router } from '@angular/router';
 
-let baseURL = "https://kickserver.xyz";
 @Component({
   selector: 'app-dashboard',
   templateUrl: './home.page.html',
   styleUrls: ['./home.page.scss'],
 })
-
 export class HomePage implements OnInit {
-
   map: mapboxgl.Map;
   style = 'mapbox://styles/gperdigal/ckh1ykln916ew1apnxih3omld';
-  lng = 46.1390432;
-  lat = 2.434848;
+  lng;
+  lat;
   data: any;
   customData: any;
   geolocate: any;
   wantsToMark: boolean;
-  userId: any;
-  userPseudo: any;
-  placeName : string;
+  placeName: string;
   constructor(
     private geolocation2: Geolocation,
     private router: Router,
     private popover: PopoverController,
     public modalController: ModalController,
     @Inject(DOCUMENT) private document: Document
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.ionicGeolocation();
-    //this.postCoordinates();
-    // this.getCustomCoordinates();
   }
 
   ionViewDidEnter() {
@@ -58,64 +49,44 @@ export class HomePage implements OnInit {
     const popover = await this.popover.create({
       component: TopToolbarComponent,
       cssClass: 'popoverClass',
-      event: ev
+      event: ev,
     });
     return await popover.present();
   }
 
   ionicGeolocation() {
-    this.geolocation2.getCurrentPosition().then((resp) => {
-      console.log(resp)
-      // resp.coords.latitude
-      // resp.coords.longitude
-    }).catch((error) => {
-      console.log('Error getting location', error);
-    });
-
-    let watch = this.geolocation2.watchPosition();
-    watch.subscribe((data) => {
-      // data can be a set of coordinates, or an error (if an error occurred).
-      // data.coords.latitude
-      // data.coords.longitude
-    });
+    this.geolocation2
+      .getCurrentPosition()
+      .then((resp) => {
+        this.lat = resp.coords.latitude;
+        this.lng = resp.coords.longitude;
+      })
+      .catch((error) => {
+        console.log('Error getting location', error);
+      });
   }
-
-  // getCustomCoordinates() {
-  //   this.http.get(`${baseURL}/chatApp/getCoordinates`).subscribe(
-  //     (res: any) => {
-  //       console.log(res.object1);
-  //       this.data = res.object1;
-
-
-  //     }
-
-  //   );
-  // }
-
 
   buildMap() {
     (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
     this.map = new mapboxgl.Map({
       container: 'map',
       style: this.style,
-      center: [this.lat, this.lng],
-      zoom: 4,
+      center: [this.lng, this.lat],
+      zoom: 15,
     });
 
     this.map.addControl(
-      this.geolocate = new mapboxgl.GeolocateControl({
+      (this.geolocate = new mapboxgl.GeolocateControl({
         positionOptions: {
-          enableHighAccuracy: true
+          enableHighAccuracy: true,
         },
-        trackUserLocation: true
-      })
+        trackUserLocation: true,
+      }))
     );
 
     this.map.addControl(new mapboxgl.NavigationControl());
 
     this.map.on('load', (event) => {
-
-
       class MyCustomControl {
         container: any;
         map: any;
@@ -123,11 +94,15 @@ export class HomePage implements OnInit {
           this.map = map;
           this.container = document.createElement('ion-button');
           this.container.className = 'my-custom-control';
-          this.container.innerHTML = '<ion-icon name="pin"></ion-icon>&nbsp;Projet'
-          this.container.setAttribute("color", "success");
-          this.container.setAttribute("style", "position:absolute; bottom:94px; right:45px;");
-          this.container.setAttribute("size", "small");
-          this.container.setAttribute("id", "myCustomId");
+          this.container.innerHTML =
+            '<ion-icon name="pin"></ion-icon>&nbsp;Ajouter un projet';
+          this.container.setAttribute('color', 'success');
+          this.container.setAttribute(
+            'style',
+            'position:fixed; bottom:10px; right:0; left: 0; padding: 0 10px;'
+          );
+          this.container.setAttribute('size', 'small');
+          this.container.setAttribute('id', 'myCustomId');
           return this.container;
         }
         onRemove() {
@@ -139,27 +114,14 @@ export class HomePage implements OnInit {
       const myCustomControl = new MyCustomControl();
 
       this.map.addControl(myCustomControl);
-      document.getElementById("myCustomId").addEventListener("click", () => {
+      document.getElementById('myCustomId').addEventListener('click', () => {
         this.markFunction();
         this.map.removeControl(myCustomControl);
       });
 
-
-
-      //  this.geolocate.trigger();
-      /*   this.geolocate.on('geolocate',  () =>  {
-           var userlocation2 = this.geolocate._lastKnownPosition.coords;
-           var userlocation= [this.geolocate._lastKnownPosition.coords.latitude, this.geolocate._lastKnownPosition.coords.longitude];
-          // this.postCoordinates(userlocation)
-           console.log("geolocalisation en cours" , userlocation); })*/
-
-
       this.map.addSource('customPoint', {
         type: 'geojson',
         data: this.data,
-        cluster: true,
-        clusterMaxZoom: 14, // Max zoom to cluster points on
-        clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
       });
 
       this.map.addLayer({
@@ -168,19 +130,14 @@ export class HomePage implements OnInit {
         source: 'customPoint',
         filter: ['has', 'point_count'],
         paint: {
-          // Use step expressions (https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
-          // with three steps to implement three types of circles:
-          //   * Blue, 20px circles when point count is less than 100
-          //   * Yellow, 30px circles when point count is between 100 and 750
-          //   * Pink, 40px circles when point count is greater than or equal to 750
           'circle-color': [
             'step',
             ['get', 'point_count'],
-            '#51bbd6',
+            '#afd076',
             100,
-            '#f1f075',
+            '#afd076',
             750,
-            '#f28cb1'
+            '#afd076',
           ],
           'circle-radius': [
             'step',
@@ -189,124 +146,20 @@ export class HomePage implements OnInit {
             100,
             30,
             750,
-            40
-          ]
-        }
+            40,
+          ],
+        },
       });
-
-      this.map.addLayer({
-        id: 'cluster-count',
-        type: 'symbol',
-        source: 'customPoint',
-        filter: ['has', 'point_count'],
-        layout: {
-          'text-field': '{point_count_abbreviated}',
-          'text-font': ['DIN Offc Pro Medium', 'Arial Unicode MS Bold'],
-          'text-size': 12
-        }
-      });
-
-      this.map.addLayer({
-        id: 'unclustered-point',
-        type: 'circle',
-        source: 'customPoint',
-        filter: ['!', ['has', 'point_count']],
-        paint: {
-          'circle-color': '#5f8394',
-          'circle-radius': 6,
-          'circle-stroke-width': 2,
-          'circle-stroke-color': '#fff'
-        }
-      });
-
-      this.map.on('click', 'unclustered-point', (e) => {
-        var coordinates = e.features[0].geometry.coordinates.slice();
-        var description = e.features[0].properties.description;
-        var clusterId = e.features[0].properties.cluster_id;
-        this.userId = e.features[0].properties.userId;
-        this.userPseudo = e.features[0].properties.pseudo;
-        console.log(this.userId);
-        console.log(this.userPseudo);
-
-
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
-
-        // this.getPlaceName(coordinates).subscribe((res: any) => {
-        //   console.log(res.features[0].place_name);
-        //   this.placeName= res.features[0].place_name;
-        //   if(this.placeName = res.features[0].place_name) {
-        // new mapboxgl.Popup()
-        // .setLngLat(coordinates)
-        // .setHTML(`<p style="color:grey;">${this.userPseudo},${this.placeName}</p><ion-button id='myBtn1' color="dark">Profil</ion-button><ion-button id='myBtn' fill="clear" color="dark">Messages</ion-button>`)//`<a class="verticalAlign" [routerLink]="['/contactDashboard',receiverId]">`
-        // .addTo(this.map);
-        //  this.createListener();
-        // }
-        // });
-
-
-
-      });
-
-
-
-
-
-
-
-    });
-
-
-  }
-  createListener() {
-    document.getElementById("myBtn1").addEventListener("click", () => {
-      this.router.navigate(['/contactDashboard', this.userId])
     });
   }
 
   markFunction() {
     this.wantsToMark = true;
-    console.log("normalement c'est true putain", this.wantsToMark)
     this.map.once('click', (event) => {
-      // console.log(event.lngLat);
-
-      var marker = new mapboxgl.Marker()
+      new mapboxgl.Marker()
         .setLngLat(event.lngLat)
         .addTo(this.map);
-
-      //add modal or whatever to confirm the marker choice THEN TRIGGER THE postCoordinates(event.lngLat) 
-      alert("confirmer le choix du marker");
-      console.log(event.lngLat.lng);
-      let coordinatesToPost = [event.lngLat.lng, event.lngLat.lat]
-      this.postCoordinates(coordinatesToPost);
-    })
+    });
   }
-  postCoordinates(userCoordinates) {
-
-    let data = {
-      coordinates: userCoordinates
-    }
-    // this.http.post(`${baseURL}/chatApp/putCoordinates`, data).subscribe(
-    //   (res: any) => {
-    //     console.log(res);
-    //   }
-
-    // );
-
-  }
-  goBack() {
-    console.log("wantstobackoff")
-  }
-
-  // getPlaceName(coordinates) {
-  //   return this.http.get(`https://api.mapbox.com/geocoding/v5/mapbox.places/${coordinates}.json?types=place&access_token=${environment.mapbox.accessToken}`)
-  // }
-  /*
-  ngOnDestroy() { 
-    console.log("IM LEAVING MAP BOYS")
-    this.map.remove();
-  }
-*/
 
 }
