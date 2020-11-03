@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { TopToolbarComponent } from './../../components/top-toolbar/top-toolbar.component';
-import { PopoverController, ModalController } from '@ionic/angular';
+import { PopoverController, ModalController, AlertController } from '@ionic/angular';
 
 import { environment } from '../../../environments/environment';
 import * as mapboxgl from 'mapbox-gl';
@@ -30,11 +30,36 @@ export class HomePage implements OnInit {
     private router: Router,
     private popover: PopoverController,
     public modalController: ModalController,
+    public alertController: AlertController,
     @Inject(DOCUMENT) private document: Document
   ) {}
 
   ngOnInit() {
     this.ionicGeolocation();
+  }
+
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      header: 'Ajouter ici ?',
+      message: 'Ajouter une nouvelle proposition d\'amélioration dans votre commune',
+      inputs: [
+        {
+          name: 'title',
+          type: 'text',
+          id: 'title',
+          placeholder: 'Libellé du projet'
+        },
+        {
+          name: 'description',
+          type: 'textarea',
+          id: 'description',
+          placeholder: 'Description du projet'
+        }
+      ],
+      buttons: ['Ajouter', 'Retour']
+    });
+
+    await alert.present();
   }
 
   ionViewDidEnter() {
@@ -65,6 +90,8 @@ export class HomePage implements OnInit {
         console.log('Error getting location', error);
       });
   }
+
+
 
   buildMap() {
     (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
@@ -124,6 +151,7 @@ export class HomePage implements OnInit {
   markFunction() {
     this.wantsToMark = true;
     this.map.once('click', (event) => {
+      this.presentAlert();
       new mapboxgl.Marker()
         .setLngLat(event.lngLat)
         .addTo(this.map);
