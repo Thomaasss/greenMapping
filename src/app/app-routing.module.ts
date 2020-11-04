@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'home',
     loadChildren: () => import('./logged/home/home.module').then( m => m.HomePageModule)
   },
+  {
+    path: 'vote',
+    loadChildren: () => import('./logged/vote/vote.module').then( m => m.VotePageModule)
+  },
 ];
 
 @NgModule({

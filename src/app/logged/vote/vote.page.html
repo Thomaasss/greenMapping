@@ -1,0 +1,24 @@
+<app-top-toolbar></app-top-toolbar>
+
+<ion-header>
+  <ion-toolbar class="kickBg">
+    <ion-title class="icon whiteSmoke">Green Vote</ion-title>
+    <ion-buttons slot="end">
+      <ion-button disabled="false" color="warning" autoHide='false' routerLink="/dashboard">
+        <ion-icon class="settingBtn" name="navigate-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+<ion-list>
+  <ion-item button *ngFor="let pin of pins" (click)="presentAlert(pin.title, pin.user.username, pin.comment)">
+    <ion-label>
+      <h3>{{ pin.title }}</h3>
+      <p>{{ pin.comment | slice:0:20 }}</p>
+    </ion-label>
+    <ion-icon (click)="vote(pin._id, $event)" *ngIf="pin.likes.indexOf(user) == -1 "name="thumbs-up-outline" slot="end"></ion-icon>
+    <ion-icon (click)="vote(pin._id, $event)" *ngIf="pin.likes.indexOf(user) > -1" name="thumbs-up" slot="end"></ion-icon>
+  </ion-item>
+</ion-list>
+</ion-content>
