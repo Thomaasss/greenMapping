@@ -116,7 +116,7 @@ export class HomePage implements OnInit {
   }
 
   logout() {
-    sessionStorage.removeItem("token");
+    localStorage.removeItem("token");
     this.router.navigateByUrl("/");
   }
 

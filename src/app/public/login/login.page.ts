@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthGuardService } from 'src/app/guards/auth-guard.service';
 import { ApiService } from 'src/app/services/api.service';
 
 let baseURL = "https://kickserver.xyz";
@@ -63,7 +64,7 @@ export class LoginPage implements OnInit {
   wrongLogin : boolean;
   wrongLoginMsg : string;
 
-  constructor(private router : Router, private api: ApiService) {
+  constructor(private router : Router, private api: ApiService, private authGuard: AuthGuardService) {
     this.pageTitle="Connexion";
 
     this.slogan = "The future is yours";
@@ -115,6 +116,9 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
+    if(this.authGuard.isLogged()) {
+      this.router.navigateByUrl('/dashboard');
+    }
   }
 
 }

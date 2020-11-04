@@ -12,18 +12,17 @@ export class AuthGuardService implements CanActivate {
 
   canActivate(): boolean {
     if (!this.auth.isAuthenticated()) {
-      this.router.navigateByUrl('/connexion');
+      this.router.navigateByUrl('/login');
       return false;
     }
     return true;
   }
 
-  displayButtons(): boolean {
-    if (!this.auth.isAuthenticated() || localStorage.getItem("token") == "null" || localStorage.getItem("token") == "Bearer undefined") {
+  isLogged(): boolean {
+    if (!this.auth.isAuthenticated() || localStorage.getItem("admin") == "null" || localStorage.getItem("admin") == "Bearer undefined") {
       return false;
     } else {
       return true;
     }
   }
-
 }

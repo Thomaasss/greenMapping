@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AuthGuardService } from 'src/app/guards/auth-guard.service';
 
 @Component({ 
   selector: 'app-home',
@@ -21,7 +22,8 @@ export class HomePage {
   goSnap : string;
   
   constructor(private router : Router,
-              private route : ActivatedRoute ){
+              private route : ActivatedRoute,
+              private authGuard: AuthGuardService ){
     this.slogan = "The future is yours";
     this.loginBtn = "Connexion";
     this.signUpMsg = "Tu n'as pas encore de compte ?";
@@ -29,6 +31,9 @@ export class HomePage {
   }
 
   ngOnInit() {
+    if(this.authGuard.isLogged()) {
+      this.router.navigateByUrl('/dashboard');
+    }
   }
 
 }

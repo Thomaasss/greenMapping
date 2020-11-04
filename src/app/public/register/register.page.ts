@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
+import { AuthGuardService } from 'src/app/guards/auth-guard.service';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
@@ -78,7 +79,7 @@ export class RegisterPage {
               private alertController : AlertController,
               private route : ActivatedRoute,
               public toastController : ToastController,
-              private api: ApiService) {
+              private api: ApiService, private authGuard: AuthGuardService) {
     this.pageTitle="Inscription";
 
     this.slogan = "Plus qu'une petite étape...";
@@ -115,7 +116,9 @@ export class RegisterPage {
   }
 
   ngOnInit() {
-    
+    if(this.authGuard.isLogged()) {
+      this.router.navigateByUrl('/dashboard');
+    }
   }
 
   ionViewWillEnter(){
@@ -150,6 +153,10 @@ export class RegisterPage {
 
   wrongEmailRemove() {
     this.wrongMail1 = false;
+  }
+
+  telInpFoc() {
+    this.logError = false;
   }
 
   usernameInpFoc() {
