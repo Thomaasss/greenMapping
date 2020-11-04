@@ -55,28 +55,24 @@ export class ApiService {
     });
   }
 
-  login(email: string, password: string) {
+  login(login) {
     const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
+      'Content-Type': 'application/json'
     });
-    const options = { headers };
-    const postData = { email, password };
+    const options = { headers }
+    const postData = { username: login.username, password: login.password }
     return new Promise((resolve) => {
-      this.httpClient
-        .post(this.apiBaseUrl + 'user/login', postData, options)
-        .subscribe(
-          (data: any) => {
-            this.token += data.token;
-            localStorage.setItem('token', this.token);
-            localStorage.setItem('email', email);
-            this.presentToast('success', 'Te voilà connecté !');
-            this.router.navigateByUrl('XXXX');
-            resolve(data);
-          },
-          (err) => {
-            this.presentToast('danger', err.error.message);
-          }
-        );
+      this.httpClient.post(this.apiBaseUrl + 'user/login', postData, options).subscribe((data: any) => {
+        this.token += data.token;
+        localStorage.setItem('token', this.token);
+        this.presentToast('success', 'Te voilà connecté !');
+        this.router.navigateByUrl('/dashboard');
+        resolve(data);
+      }, err => {
+        if (err.error.message != undefined && err.error.message != '' && err.error.message != null) {
+          this.presentToast('danger', err.error.message);
+        }
+      });
     });
   }
 }

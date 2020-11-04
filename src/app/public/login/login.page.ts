@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ApiService } from 'src/app/services/api.service';
 
 let baseURL = "https://kickserver.xyz";
 
@@ -62,7 +63,7 @@ export class LoginPage implements OnInit {
   wrongLogin : boolean;
   wrongLoginMsg : string;
 
-  constructor(private router : Router) {
+  constructor(private router : Router, private api: ApiService) {
     this.pageTitle="Connexion";
 
     this.slogan = "The future is yours";
@@ -107,10 +108,9 @@ export class LoginPage implements OnInit {
 
     this.onLoading = true;
 
-    let data = {
-      username: this.loginForm.username,
-      password : this.loginForm.password
-    };
+    this.api.login(this.loginForm).then(result => {
+      this.onLoading = false;
+    });
 
   }
 

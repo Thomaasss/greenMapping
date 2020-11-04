@@ -66,6 +66,11 @@ export class HomePage implements OnInit {
       });
   }
 
+  logout() {
+    sessionStorage.removeItem('token');
+    this.router.navigateByUrl('/');
+  }
+
   buildMap() {
     (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
     this.map = new mapboxgl.Map({

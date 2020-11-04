@@ -9,7 +9,7 @@ import { ApiService } from 'src/app/services/api.service';
   styleUrls: ['./register.page.scss'],
 })
 
-export class RegisterPage implements OnInit {
+export class RegisterPage {
   
   // PATTERN INPUT
   register : any = {}; //nécessaire pour utiliser nGmodel dans la page html
