@@ -93,8 +93,36 @@ export class ApiService {
     });
     const options = { headers };
     return new Promise((resolve) => {
+      this.httpClient.get(this.apiBaseUrl + "pin", options).subscribe(
+        (data: any) => {
+          resolve(data);
+        },
+        (err) => {
+          if (
+            err.error.message != undefined &&
+            err.error.message != "" &&
+            err.error.message != null
+          ) {
+            this.presentToast("danger", err.error.message);
+          }
+        }
+      );
+    });
+  }
+
+  updateLoc(lat, lng) {
+    const headers = new HttpHeaders({
+      "Content-Type": "application/json",
+      Authorization: localStorage.getItem("token"),
+    });
+    const options = { headers };
+    const postData = {
+      lat: lat,
+      lng: lng
+    };
+    return new Promise((resolve) => {
       this.httpClient
-        .get(this.apiBaseUrl + "pin", options)
+        .patch(this.apiBaseUrl + "user/localisation", postData, options)
         .subscribe(
           (data: any) => {
             resolve(data);
@@ -118,7 +146,12 @@ export class ApiService {
       Authorization: localStorage.getItem("token"),
     });
     const options = { headers };
-    const postData = { title, comment: desc, lng: coordinates.lng, lat: coordinates.lat };
+    const postData = {
+      title,
+      comment: desc,
+      lng: coordinates.lng,
+      lat: coordinates.lat,
+    };
     return new Promise((resolve) => {
       this.httpClient
         .post(this.apiBaseUrl + "pin", postData, options)
@@ -146,10 +179,10 @@ export class ApiService {
       Authorization: localStorage.getItem("token"),
     });
     const options = { headers };
-    const postData = { };
+    const postData = {};
     return new Promise((resolve) => {
       this.httpClient
-        .post(this.apiBaseUrl + "pin/up/"+id, postData, options)
+        .post(this.apiBaseUrl + "pin/up/" + id, postData, options)
         .subscribe(
           (data: any) => {
             this.presentToast("success", String(data));

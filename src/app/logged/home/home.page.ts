@@ -71,7 +71,7 @@ export class HomePage implements OnInit {
               this.api.setMarker(data.title, data.description, lngLat);
               new mapboxgl.Marker().setLngLat(lngLat).addTo(this.map);
             }
-            this.ionicGeolocation();
+            this.ionicGeolocation(lngLat.lat, lngLat.lng);
           },
         },
         {
@@ -101,13 +101,14 @@ export class HomePage implements OnInit {
     return await popover.present();
   }
 
-  ionicGeolocation() {
+  ionicGeolocation(lat?, lng?) {
     this.geolocation2
       .getCurrentPosition()
       .then((resp) => {
         this.lat = resp.coords.latitude;
         this.lng = resp.coords.longitude;
-        this.buildMap();
+        this.api.updateLoc(resp.coords.latitude, resp.coords.longitude);
+        this.buildMap(lat ? lat : null, lng ? lng : null);
       })
       .catch((error) => {
         console.log("Error getting location", error);
@@ -119,12 +120,12 @@ export class HomePage implements OnInit {
     this.router.navigateByUrl("/");
   }
 
-  buildMap() {
+  buildMap(lat?, lng?) {
     (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
     this.map = new mapboxgl.Map({
       container: "map",
       style: this.style,
-      center: [this.lng, this.lat],
+      center: [lng ? lng : this.lng, lat ? lat : this.lat],
       zoom: 15,
     });
     this.api.getPins().then((pins: any) => {

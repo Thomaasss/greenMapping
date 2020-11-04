@@ -17,8 +17,7 @@
       <h3>{{ pin.title }}</h3>
       <p>{{ pin.comment | slice:0:20 }}</p>
     </ion-label>
-    <ion-icon (click)="vote(pin._id, $event)" *ngIf="pin.likes.indexOf(user) == -1 "name="thumbs-up-outline" slot="end"></ion-icon>
-    <ion-icon (click)="vote(pin._id, $event)" *ngIf="pin.likes.indexOf(user) > -1" name="thumbs-up" slot="end"></ion-icon>
+    <ion-icon (click)="vote(pin._id, $event)" name="{{ pin.likes.indexOf(user) == -1 ? 'thumbs-up-outline' : 'thumbs-up' }}" slot="end"></ion-icon>{{ pin.likes.length }}
   </ion-item>
 </ion-list>
 </ion-content>

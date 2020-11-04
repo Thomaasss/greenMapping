@@ -40,7 +40,8 @@ export class VotePage implements OnInit {
   vote(id, $e) {
     $e.stopPropagation();
     this.api.vote(id).then((result) => {
-      this.ngOnInit();
+      this.fetchVotes();
     });
   }
+  
 }

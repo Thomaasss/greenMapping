@@ -11,6 +11,13 @@
     bottom:50px;
 }
 
+ion-spinner {
+    display: block;
+    margin: 0 auto;
+    transform: scale(2.3);
+    margin-top: 25vh;
+}
+
 ion-alert
 {
  --background: red !important;
