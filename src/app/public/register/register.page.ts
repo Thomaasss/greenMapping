@@ -114,6 +114,10 @@ export class RegisterPage {
 
   }
 
+  ngOnInit() {
+    
+  }
+
   ionViewWillEnter(){
   }
 
