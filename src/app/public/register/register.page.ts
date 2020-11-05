@@ -148,7 +148,7 @@ export class RegisterPage {
   }
 
   registerForm() {
-    this.api.register(this.register);
+      this.api.register(this.register);
   }
 
   wrongEmailRemove() {

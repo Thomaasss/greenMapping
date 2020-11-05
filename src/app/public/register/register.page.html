@@ -68,7 +68,7 @@
       <div class="marginBetweenInputs"></div>
       <!-- SUBMIT -->
       <ion-button *ngIf="!passwordConfirm.errors?.pattern && !passwordConfirm.errors?.required && !lName.errors?.pattern && !fName.errors?.pattern && !password.errors?.pattern && !password.errors?.required && !email.errors?.pattern && !email.errors?.required && !username.errors?.pattern && !tel.errors?.pattern && !username.errors?.required && passwordMatches && !wrongMail && !wrongUsername && !logError" expand="full" color="success" type="submit">{{loginBtn}}</ion-button>
-      <ion-button *ngIf="passwordConfirm.errors?.pattern || !tel.errors?.pattern || !fName.errors?.pattern || !lName.errors?.pattern || passwordConfirm.errors?.required || password.errors?.pattern || password.errors?.required || email.errors?.pattern || email.errors?.required || username.errors?.pattern || username.errors?.required || !passwordMatches" expand="full" color="success" disabled>{{loginBtn}}</ion-button>
+      <ion-button *ngIf="passwordConfirm.errors?.pattern || passwordConfirm.errors?.required || lName.errors?.pattern || fName.errors?.pattern || password.errors?.pattern || password.errors?.required || email.errors?.pattern || email.errors?.required || username.errors?.pattern || tel.errors?.pattern || username.errors?.required || !passwordMatches || wrongMail || wrongUsername || logError" expand="full" color="success" disabled>{{loginBtn}}</ion-button>
       <ion-button disabled *ngIf="wrongMail" expand="full" color="danger">{{wrongMailMsg}}</ion-button>
       <ion-button disabled *ngIf="wrongUsername" expand="full" color="danger">{{wrongUsernameMsg}}</ion-button>
       <ion-button disabled *ngIf="logError" expand="full" color="danger">{{logErrorMsg}}</ion-button>
