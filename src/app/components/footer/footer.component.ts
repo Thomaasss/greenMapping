@@ -9,7 +9,7 @@ export class FooterComponent implements OnInit {
 
   footerMessage: string;
   constructor() {
-    this.footerMessage = "© Green Mapping 2021. Tous droits réservés.";
+    this.footerMessage = "© Green Mapping 2020. Tous droits réservés.";
   }
 
   ngOnInit() { }

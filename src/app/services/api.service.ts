@@ -7,7 +7,7 @@ import { ToastController } from "@ionic/angular";
   providedIn: "root",
 })
 export class ApiService {
-  apiBaseUrl = "http://localhost:4321/";
+  apiBaseUrl = "https://greenmapping.herokuapp.com/";
   token = "Bearer ";
 
   constructor(

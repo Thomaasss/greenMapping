@@ -126,7 +126,7 @@ export class HomePage implements OnInit {
       container: "map",
       style: this.style,
       center: [lng ? lng : this.lng, lat ? lat : this.lat],
-      zoom: 15,
+      zoom: lng ? 20 : 15,
     });
     this.api.getPins().then((pins: any) => {
       pins.forEach((pin) => {
